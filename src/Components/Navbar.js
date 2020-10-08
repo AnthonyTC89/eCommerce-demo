@@ -14,7 +14,6 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import SettingsIcon from '@material-ui/icons/Settings';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import HomeIcon from '@material-ui/icons/Home';
 import Grid from '@material-ui/core/Grid';
@@ -180,9 +179,6 @@ const Navbar = ({ history, changeSession }) => {
             </IconButton>
             <IconButton onClick={() => handleHistory('/session')} color="inherit">
               <AccountCircleIcon fontSize="small" />
-            </IconButton>
-            <IconButton onClick={() => handleHistory('/dashboard')} color="inherit">
-              <SettingsIcon fontSize="small" />
             </IconButton>
             <IconButton onClick={handleLogout} color="inherit">
               <ExitToAppIcon fontSize="small" />

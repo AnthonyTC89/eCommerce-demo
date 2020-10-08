@@ -7,7 +7,6 @@ import About from './About';
 import Session from './Session';
 import Profile from './Profile';
 import Contact from './Contact';
-import Dashboard from './Dashboard';
 import Maintenance from './Maintenance';
 import Shop from './Shop';
 import Favorites from './Favorites';
@@ -21,7 +20,6 @@ const App = () => (
         <Route path="/contact" component={Contact} exact />
         <Route path="/session" component={Session} exact />
         <Route path="/profile" component={Profile} exact />
-        <Route path="/dashboard" component={Dashboard} exact />
         <Route path="/maintenance" component={Maintenance} exact />
         <Route path="/shop" component={Shop} exact />
         <Route path="/favorites" component={Favorites} exact />

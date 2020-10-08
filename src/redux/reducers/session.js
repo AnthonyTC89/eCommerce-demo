@@ -1,11 +1,6 @@
 const defaultSession = {
-  user: {
-    id: 1,
-    email: 'user1@gmail.com',
-    status: 3,
-    username: 'user1',
-  },
-  isLoggedIn: true,
+  user: null,
+  isLoggedIn: false,
 };
 
 const session = (state = defaultSession, { type, user }) => {

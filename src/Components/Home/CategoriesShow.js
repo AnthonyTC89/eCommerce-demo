@@ -43,8 +43,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TOKEN = process.env.REACT_APP_TOKEN;
-
 const CategoriesShow = () => {
   const classes = useStyles();
   const { title, defaultCategories } = CategoriesInfo;
@@ -54,13 +52,10 @@ const CategoriesShow = () => {
   const getCategories = async () => {
     setLoading(true);
     try {
+      const TOKEN = process.env.REACT_APP_TOKEN;
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/categories_home', config);
-      if (res.data.length === 0) {
-        setCategories(defaultCategories);
-      } else {
-        setCategories(res.data);
-      }
+      const res = await axios.get('/api/categories_shop', config);
+      setCategories(res.data);
     } catch (err) {
       setCategories(defaultCategories);
     } finally {

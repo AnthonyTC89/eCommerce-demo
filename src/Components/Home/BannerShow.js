@@ -60,11 +60,9 @@ const Banner = () => {
         timeout: 10000,
         headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
       };
-      const res = await axios.get('/api/banners_home', config);
+      const res = await axios.get('/api/banners_shop', config);
       if (res.data.length !== 0) {
         setBanner(res.data[0]);
-      } else {
-        setBanner(defaultBanner);
       }
     } catch (err) {
       setBanner(defaultBanner);

@@ -27,7 +27,6 @@ const useStyles = makeStyles({
   },
 });
 
-const TOKEN = process.env.REACT_APP_TOKEN;
 
 const Footer = () => {
   const classes = useStyles();
@@ -40,8 +39,9 @@ const Footer = () => {
   const getSocialNetworks = async () => {
     setLoading(true);
     try {
+      const TOKEN = process.env.REACT_APP_TOKEN;
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/social_networks_home', config);
+      const res = await axios.get('/api/social_networks_shop', config);
       setSocialNetworks(res.data);
     } catch (err) {
       setSocialNetworks(socialNetworksDefault);

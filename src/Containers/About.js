@@ -55,7 +55,9 @@ const About = ({ history }) => {
   const getAbout = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('/api/abouts_home');
+      const TOKEN = process.env.REACT_APP_TOKEN;
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
+      const res = await axios.get('/api/abouts_shop', config);
       if (res.data.length !== 0) {
         setAbout(res.data[0]);
       } else {

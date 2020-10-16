@@ -50,11 +50,9 @@ const ArticlesHome = () => {
   const getArticles = async () => {
     setLoading(true);
     try {
-      const config = {
-        timeout: 10000,
-        headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-      };
-      const res = await axios.get('/api/articles_home', config);
+      const TOKEN = process.env.REACT_APP_TOKEN;
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
+      const res = await axios.get('/api/articles_shop', config);
       setArticles(res.data);
     } catch (err) {
       setArticles(defaultArticles);

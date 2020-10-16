@@ -1,7 +1,7 @@
 <p align="center">
   <h1 align="center">eCommerce-demo</h1>
   <p align="center">
-    Project Create with React
+    Project Create with React Redux and Material-UI
     <br>
     <br>
     <a href="https://ecommerce-atc.herokuapp.com/" target="_blank">Live Demo</a>

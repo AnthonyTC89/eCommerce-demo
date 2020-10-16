@@ -85,11 +85,9 @@ const Navbar = ({ history, changeSession }) => {
   const getLogo = async () => {
     setLoading(true);
     try {
-      const config = {
-        timeout: 10000,
-        headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-      };
-      const res = await axios.get('/api/logos_home', config);
+      const TOKEN = process.env.REACT_APP_TOKEN;
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
+      const res = await axios.get('/api/logos_shop', config);
       if (res.data.length !== 0) {
         setLogo(res.data[0]);
       } else {

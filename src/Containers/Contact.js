@@ -37,7 +37,9 @@ const Contact = ({ history }) => {
   const getContact = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('/api/contacts_home');
+      const TOKEN = process.env.REACT_APP_TOKEN;
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
+      const res = await axios.get('/api/contacts_shop', config);
       if (res.data.length === 0) {
         setContact(defaultContact);
       } else {

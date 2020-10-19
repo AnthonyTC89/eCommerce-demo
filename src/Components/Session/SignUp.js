@@ -37,7 +37,7 @@ const defaultInputForm = {
   password_confirmation: '',
 };
 
-const SignIn = ({ changeSession, handleComponent }) => {
+const SignIn = ({history, changeSession, handleComponent }) => {
   const [inputForm, setInputForm] = useState(defaultInputForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
@@ -62,11 +62,12 @@ const SignIn = ({ changeSession, handleComponent }) => {
       const token = jwt.sign(inputForm, privateKey);
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
       const res = await axios.post('/api/users', { token }, config);
-      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('user_token', res.data.token);
       setMessage(res.statusText);
       setInputForm(defaultInputForm);
       setLoading(false);
       changeSession(res.data.user);
+      history.push('/shop');
     } catch (err) {
       setMessage(err.response.statusText);
       setLoading(false);
@@ -158,6 +159,7 @@ const SignIn = ({ changeSession, handleComponent }) => {
 };
 
 SignIn.propTypes = {
+  history: PropTypes.object.isRequired,
   changeSession: PropTypes.func.isRequired,
   handleComponent: PropTypes.func.isRequired,
 };

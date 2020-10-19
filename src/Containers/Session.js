@@ -19,7 +19,7 @@ const Session = ({ history, session, updatingSession }) => {
   };
 
   const checkLocalStorage = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('user_token');
     if (token) {
       try {
         const config = {
@@ -29,7 +29,7 @@ const Session = ({ history, session, updatingSession }) => {
         const res = await axios.post('/api/users/auto_login', { token }, config);
         updatingSession(res.data);
       } catch (err) {
-        localStorage.removeItem('token');
+        localStorage.removeItem('user_token');
       }
     }
   };

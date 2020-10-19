@@ -31,23 +31,14 @@ const Favorites = ({ history, session, updatingSession, articles, categories, fa
   const [message, setMessage] = useState(null);
 
   const anchorOriginSnackbar = { horizontal: 'center', vertical: 'top' };
-
-  const configAxios = {
-    timeout: 10000,
-    headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-  };
-
-  const checkSession = () => {
-    if (!session.isLoggedIn) {
-      history.push('/');
-    }
-  };
+  const TOKEN = process.env.REACT_APP_TOKEN;
+  const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
 
   const checkLocalStorage = async () => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const res = await axios.post('/api/users/auto_login', { token }, configAxios);
+        const res = await axios.post('/api/customers/auto_login', { token }, config);
         updatingSession(res.data);
       } catch (err) {
         localStorage.removeItem('token');
@@ -58,7 +49,7 @@ const Favorites = ({ history, session, updatingSession, articles, categories, fa
   const getArticles = async () => {
     setMessage(null);
     try {
-      const res = await axios.get('/api/articles_full', configAxios);
+      const res = await axios.get('/api/articles_shop', config);
       updatingArticles(res.data);
     } catch (err) {
       if (err.response) {
@@ -74,7 +65,7 @@ const Favorites = ({ history, session, updatingSession, articles, categories, fa
   const getCategories = async () => {
     setMessage(null);
     try {
-      const res = await axios.get('/api/categories_full', configAxios);
+      const res = await axios.get('/api/categories_shop', config);
       updatingCategories(res.data);
     } catch (err) {
       if (err.response) {
@@ -91,7 +82,7 @@ const Favorites = ({ history, session, updatingSession, articles, categories, fa
     setMessage(null);
     try {
       const { id } = session.user;
-      const res = await axios.get(`/api/users/${id}/favorites`, configAxios);
+      const res = await axios.get(`/api/customers/${id}/favorites`, config);
       updatingFavorites(res.data);
     } catch (err) {
       if (err.response) {
@@ -122,12 +113,12 @@ const Favorites = ({ history, session, updatingSession, articles, categories, fa
   };
 
   useEffect(() => {
-    checkSession();
-  });
-
-  useEffect(() => {
-    checkLocalStorage();
-    getInfo();
+    if (!session.isLoggedIn) {
+      history.push('/session');
+    } else {
+      checkLocalStorage();
+      getInfo();
+    }
     // eslint-disable-next-line
   }, []);
 

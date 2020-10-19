@@ -37,10 +37,11 @@ const Article = ({ article, categories, session, favorites, updatingFavorites })
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const { category_id, name, location, text } = article;
+  
   const category = categories.find((item) => item.id === category_id) || noCategory;
   const favorite = favorites.find((f) => f.article_id === article.id);
   const isFavorite = favorite && favorite.status;
-
+  
   const handleClickFavorite = async (e) => {
     e.preventDefault();
     const { user } = session;

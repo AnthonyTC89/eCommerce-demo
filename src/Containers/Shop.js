@@ -31,10 +31,9 @@ const Shop = ({ history, session, updatingSession,
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
-
   const anchorOriginSnackbar = { horizontal: 'center', vertical: 'top' };
 
-  const configAxios = {
+  const config = {
     timeout: 10000,
     headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
   };
@@ -43,10 +42,6 @@ const Shop = ({ history, session, updatingSession,
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const config = {
-          timeout: 10000,
-          headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-        };
         const res = await axios.post('/api/users/auto_login', { token }, config);
         updatingSession(res.data);
       } catch (err) {
@@ -56,10 +51,9 @@ const Shop = ({ history, session, updatingSession,
   };
 
   const getArticles = async () => {
-    // setLoading(true);
     setMessage(null);
     try {
-      const res = await axios.get('/api/articles_full', configAxios);
+      const res = await axios.get('/api/articles_shop', config);
       updatingArticles(res.data);
     } catch (err) {
       if (err.response) {
@@ -69,16 +63,13 @@ const Shop = ({ history, session, updatingSession,
       } else {
         setMessage('error');
       }
-    } finally {
-      // setLoading(false);
     }
   };
 
   const getCategories = async () => {
-    // setLoading(true);
     setMessage(null);
     try {
-      const res = await axios.get('/api/categories_full', configAxios);
+      const res = await axios.get('/api/categories_shop', config);
       updatingCategories(res.data);
     } catch (err) {
       if (err.response) {
@@ -88,8 +79,6 @@ const Shop = ({ history, session, updatingSession,
       } else {
         setMessage('error');
       }
-    } finally {
-      // setLoading(false);
     }
   };
 
@@ -97,11 +86,10 @@ const Shop = ({ history, session, updatingSession,
     if (!session.user) {
       return;
     }
-    // setLoading(true);
     setMessage(null);
     try {
       const { id } = session.user;
-      const res = await axios.get(`/api/users/${id}/favorites`, configAxios);
+      const res = await axios.get(`/api/customers/${id}/favorites`, config);
       updatingFavorites(res.data);
     } catch (err) {
       if (err.response) {
@@ -111,14 +99,8 @@ const Shop = ({ history, session, updatingSession,
       } else {
         setMessage('error');
       }
-    } finally {
-      // setLoading(false);
     }
   };
-
-  // const handleCloseBackdrop = () => {
-  //   setLoading(false);
-  // };
 
   const handleCloseSnackbar = () => {
     setMessage(null);

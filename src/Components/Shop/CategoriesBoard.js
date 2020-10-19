@@ -15,8 +15,6 @@ const useStyles = makeStyles({
   },
 });
 
-const TOKEN = process.env.REACT_APP_TOKEN;
-
 const CategoriesBoard = ({ categories, updatingCategories }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -26,8 +24,9 @@ const CategoriesBoard = ({ categories, updatingCategories }) => {
     setLoading(true);
     setMessage(null);
     try {
+      const TOKEN = process.env.REACT_APP_TOKEN;
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/categories_full', config);
+      const res = await axios.get('/api/categories_shop', config);
       if (res.data.length !== 0) {
         updatingCategories(res.data);
       }

@@ -15,7 +15,6 @@ import { AboutInfo } from '../Info.json';
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: '2rem auto',
-    padding: '2rem',
     maxHeight: window.innerHeight,
   },
   title: {

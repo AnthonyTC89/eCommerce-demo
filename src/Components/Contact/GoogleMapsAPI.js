@@ -5,8 +5,8 @@ import GoogleMaps from './GoogleMaps';
 
 const GoogleMapsAPI = ({ zoom, lat, lng, googleMapsKey }) => {
   const googleMapURL = `https://maps.googleapis.com/maps/api/js?v=3.exp&key=${googleMapsKey}`;
-  const containerElement = <div style={{ height: '100%' }} />;
-  const mapElement = <div style={{ height: '100%' }} />;
+  const containerElement = <div style={{ height: '100%', width: '100%' }} />;
+  const mapElement = <div style={{ height: '100%', width: '100%' }} />;
   const loadingElement = <CircularProgress />;
 
   return (

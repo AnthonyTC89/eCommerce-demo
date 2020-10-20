@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 const Contact = ({ history, contact, updatingContact }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
+  const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
   const getContact = async () => {
     setLoading(true);
@@ -76,19 +77,16 @@ const Contact = ({ history, contact, updatingContact }) => {
             <ContactForm />
           </Grid>
           <Grid item xs={12} md={6} className={classes.picture}>
-            {contact.googleMapsKey === ''
-              ? <img className={classes.image} src={contact.location} alt="contact" />
-              : (
-                <GoogleMapsAPI
-                  zoom={contact.zoom}
-                  lat={contact.lat}
-                  lng={contact.lng}
-                  googleMapsKey={contact.googleMapsKey}
-                />
-              )}
+            <img className={classes.image} src={contact.location} alt="contact" />
           </Grid>
         </Grid>
       </Grow>
+      <GoogleMapsAPI
+        zoom={contact.zoom}
+        lat={contact.lat}
+        lng={contact.lng}
+        googleMapsKey={googleMapsKey}
+      />
       <Footer />
     </>
   );
@@ -97,7 +95,7 @@ const Contact = ({ history, contact, updatingContact }) => {
 Contact.propTypes = {
   history: PropTypes.object.isRequired,
   contact: PropTypes.object.isRequired,
-  updatingAbout: PropTypes.func.isRequired,
+  updatingContact: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

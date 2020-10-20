@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
@@ -28,6 +28,17 @@ const ArticlesBoard = ({ history, articles, categories, filters }) => {
   const articlesFiltered = getArticlesFiltered(articles, filters);
   const category = categories.find((c) => c.id === filters.category_id)
     || { name: 'Featured Articles' };
+
+  const checkArticles = () => {
+    if (articles.length === 0) {
+      history.push('/maintenance');
+    }
+  };
+
+  useEffect(() => {
+    checkArticles();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <Grid container className={classes.root}>

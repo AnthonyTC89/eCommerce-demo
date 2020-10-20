@@ -20,15 +20,6 @@
   "ProfileInfo": {
     "title": "Profile"
   },
-  "UserListInfo": {
-    "title": "Users"
-  },
-  "ImagesListInfo": {
-    "title": "Images"
-  },
-  "AboutFormInfo": {
-    "title": "About section"
-  },
   "NavbarInfo" : {
     "navItems": {
       "shop": " Shop ",
@@ -42,17 +33,6 @@
       "key": "eCommerce"
     }
   },
-  "BannerFormInfo": {
-    "title": "Banner section",
-    "defaultBanner": {
-      "title": "",
-      "subtitle": "",
-      "body": "",
-      "caption": "",
-      "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/about01.jpg",
-      "key": "Banner"
-    }
-  },
   "ContactInfo": {
     "defaultContact": {
       "title": "Contact Us",
@@ -63,12 +43,6 @@
       "address": "Av. My address 1234",
       "googleMapsKey": ""
     }
-  },
-  "ContactFormInfo": {
-    "title": "Contact section"
-  },
-  "LogoFormInfo": {
-    "title": "Logo"
   },
   "BannerInfo": {
     "title": "Banner section",
@@ -90,134 +64,15 @@
     }
   },
   "ArticlesInfo": {
-    "title": "Articles",
-    "defaultArticles": [
-      {
-        "title": "Article 01",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product01.jpg",
-        "key": "Product 01",
-        "featured": true
-      },
-      {
-        "title": "Product 02",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product02.jpg",
-        "key": "Product 02",
-        "featured": true
-      },
-      {
-        "title": "Product 03",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product03.jpg",
-        "key": "Product 03",
-        "featured": true
-      },
-      {
-        "title": "Product 04",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product04.jpg",
-        "key": "Product 04",
-        "featured": true
-      }
-    ]
-  },
-  "ProductsInfo": {
-    "title": "Featured Products",
-    "defaultProducts": [
-      {
-        "title": "Product 01",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product01.jpg",
-        "key": "Product 01",
-        "featured": true
-      },
-      {
-        "title": "Product 02",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product02.jpg",
-        "key": "Product 02",
-        "featured": true
-      },
-      {
-        "title": "Product 03",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product03.jpg",
-        "key": "Product 03",
-        "featured": true
-      },
-      {
-        "title": "Product 04",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-        "price": 99.90,
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/product04.jpg",
-        "key": "Product 04",
-        "featured": true
-      }
-    ]
+    "title": "Articles"
   },
   "CategoriesInfo": {
-    "title": "Categories",
-    "defaultCategories": [
-      {
-        "id": 1,
-        "name": "Category 01",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab dolor libero cupiditate omnis ut possimus repellat quam, incidunt reiciendis architecto? Ullam sunt rerum",
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/category01.png",
-        "key": "Category 01"
-      },
-      {
-        "id": 2,
-        "name": "Category 02",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab dolor libero cupiditate omnis ut possimus repellat quam, incidunt reiciendis architecto? Ullam sunt rerum",
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/category02.jpg",
-        "key": "Category 02"
-      },
-      {
-        "id": 3,
-        "name": "Category 03",
-        "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab dolor libero cupiditate omnis ut possimus repellat quam, incidunt reiciendis architecto? Ullam sunt rerum",
-        "location": "https://ecommerce-atc.s3-sa-east-1.amazonaws.com/category03.jpg",
-        "key": "Category 03"
-      }
-    ]
-  },
-  "SocialNetworksInfo": {
-    "title": "Social Networks",
-    "socialNetworksDefault": [
-      {
-        "name": "facebook",
-        "src": "https://img.icons8.com/fluent/48/000000/facebook-new.png",
-        "href": "https://www.facebook.com/"
-      },
-      {
-        "name": "twitter",
-        "src": "https://img.icons8.com/fluent/48/000000/twitter.png",
-        "href": "https://twitter.com/"
-      },
-      {
-        "name": "instagram",
-        "src": "https://img.icons8.com/fluent/48/000000/instagram-new.png",
-        "href": "https://instagram.com/"
-      }
-    ]
+    "title": "Categories"
   },
   "FooterInfo": {
     "authorName": "AnthonyTC89",
-    "authorUrl": "https://github.com/AnthonyTC89",
     "copyright": "All Rights Reserved.",
     "company": "eCommerce"
-  },
-  "DefaultItem" : {
-    "title": "Item Title",
-    "text": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ab dolor libero cupiditate omnis ut possimus repellat quam, incidunt reiciendis architecto? Ullam sunt rerum, dolorum aliquam vitae cupiditate neque numquam vero"
   },
   "buttons": {
     "signin": "Sign In",

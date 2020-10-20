@@ -31,11 +31,13 @@ const ArticlesTable = ({ articles, favorites }) => {
     return array;
   }, []);
   const favoriteArticles = articles.filter((article) => arrayFavorites.includes(article.id));
+  const title = favoriteArticles.length === 0 ? 
+    "You don't have Favorite Articles" : 'Favorite Articles';
 
   return (
     <TableContainer component={Paper} className={classes.root}>
       <Typography variant="h4" align="center" className={classes.title}>
-        Favorite Articles
+        {title}
       </Typography>
       <Table className={classes.table} aria-label="articles table">
         <TableBody>

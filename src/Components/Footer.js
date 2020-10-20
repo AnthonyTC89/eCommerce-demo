@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import LoadingGif from './LoadingGif';
-import { FooterInfo, SocialNetworksInfo } from '../Info.json';
+import { FooterInfo } from '../Info.json';
 
 const useStyles = makeStyles({
   footer: {
@@ -31,7 +31,6 @@ const useStyles = makeStyles({
 const Footer = () => {
   const classes = useStyles();
   const { copyright, company } = FooterInfo;
-  const { socialNetworksDefault } = SocialNetworksInfo;
   const [loading, setLoading] = useState(false);
   const [socialNetworks, setSocialNetworks] = useState([]);
   const year = new Date().getFullYear();
@@ -44,7 +43,7 @@ const Footer = () => {
       const res = await axios.get('/api/social_networks_shop', config);
       setSocialNetworks(res.data);
     } catch (err) {
-      setSocialNetworks(socialNetworksDefault);
+      setSocialNetworks([]);
     } finally {
       setLoading(false);
     }

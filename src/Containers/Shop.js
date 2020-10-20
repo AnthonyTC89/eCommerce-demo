@@ -15,7 +15,6 @@ import ArticlesBoard from '../Components/Shop/ArticlesBoard';
 import updateArticles from '../redux/actions/updateArticles';
 import updateCategories from '../redux/actions/updateCategories';
 import updateFavorites from '../redux/actions/updateFavorites';
-import updateSession from '../redux/actions/updateSession';
 
 const useStyles = makeStyles({
   root: {
@@ -26,8 +25,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Shop = ({ history, session, updatingSession,
-  updatingArticles, updatingCategories, updatingFavorites }) => {
+const Shop = ({ history, session, updatingArticles, updatingCategories, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
@@ -36,18 +34,6 @@ const Shop = ({ history, session, updatingSession,
   const config = {
     timeout: 10000,
     headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-  };
-
-  const checkLocalStorage = async () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const res = await axios.post('/api/users/auto_login', { token }, config);
-        updatingSession(res.data);
-      } catch (err) {
-        localStorage.removeItem('token');
-      }
-    }
   };
 
   const getArticles = async () => {
@@ -107,7 +93,6 @@ const Shop = ({ history, session, updatingSession,
   };
 
   useEffect(() => {
-    checkLocalStorage();
     getArticles();
     getCategories();
     setLoading(false);
@@ -154,7 +139,6 @@ Shop.propTypes = {
   updatingArticles: PropTypes.func.isRequired,
   updatingCategories: PropTypes.func.isRequired,
   updatingFavorites: PropTypes.func.isRequired,
-  updatingSession: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -165,7 +149,6 @@ const mapDispatchToProps = (dispatch) => ({
   updatingArticles: (data) => dispatch(updateArticles(data)),
   updatingCategories: (data) => dispatch(updateCategories(data)),
   updatingFavorites: (data) => dispatch(updateFavorites(data)),
-  updatingSession: (session) => dispatch(updateSession(session)),
 });
 
 const ShopWrapper = connect(mapStateToProps, mapDispatchToProps)(Shop);

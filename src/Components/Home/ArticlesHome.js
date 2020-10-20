@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import Grid from '@material-ui/core/Grid';
 import Grow from '@material-ui/core/Grow';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import LoadingGif from '../LoadingGif';
 import { ArticlesInfo } from '../../Info.json';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,33 +41,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ArticlesHome = () => {
+const ArticlesHome = ({ articles }) => {
   const classes = useStyles();
-  const { title, defaultArticles } = ArticlesInfo;
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { title } = ArticlesInfo;
 
-  const getArticles = async () => {
-    setLoading(true);
-    try {
-      const TOKEN = process.env.REACT_APP_TOKEN;
-      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/articles_shop', config);
-      setArticles(res.data);
-    } catch (err) {
-      setArticles(defaultArticles);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getArticles();
-    // eslint-disable-next-line
-  }, []);
-
-  if (loading) {
-    return <LoadingGif big />;
+  if (articles.length === 0) {
+    return null;
   }
   return (
     <section id="articles" className={classes.root}>
@@ -95,4 +74,14 @@ const ArticlesHome = () => {
   );
 };
 
-export default ArticlesHome;
+ArticlesHome.propTypes = {
+  articles: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  articles: state.articles,
+});
+
+const ArticlesHomeWrapper = connect(mapStateToProps, null)(ArticlesHome);
+
+export default ArticlesHomeWrapper;

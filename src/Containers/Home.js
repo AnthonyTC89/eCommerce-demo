@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from '../Components/Navbar';
-import BannerShow from '../Components/Home/BannerShow';
+import BannerHome from '../Components/Home/BannerHome';
 import ArticlesHome from '../Components/Home/ArticlesHome';
-import CategoriesShow from '../Components/Home/CategoriesShow';
+import CategoriesHome from '../Components/Home/CategoriesHome';
 import Footer from '../Components/Footer';
 
 const Home = ({ history }) => (
   <>
     <Navbar history={history} />
     <main>
-      <BannerShow />
-      <CategoriesShow />
+      <BannerHome />
+      <CategoriesHome />
       <ArticlesHome />
     </main>
     <Footer />

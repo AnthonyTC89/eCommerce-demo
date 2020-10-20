@@ -1,13 +1,4 @@
-const defaultBanner = {
-  id: null,
-  title: '',
-  subtitle: '',
-  body: '',
-  caption: '',
-  image_id: null,
-  location: '',
-  key: '',
-};
+const defaultBanner = null;
 
 const banner = (state = defaultBanner, { type, item }) => {
   switch (type) {

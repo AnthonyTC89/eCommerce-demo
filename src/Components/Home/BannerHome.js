@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grow from '@material-ui/core/Grow';
 import { makeStyles } from '@material-ui/core/styles';
-import LoadingGif from '../LoadingGif';
 import { BannerInfo } from '../../Info.json';
 
 const useStyles = makeStyles({
@@ -47,64 +47,37 @@ const useStyles = makeStyles({
   },
 });
 
-const Banner = () => {
+const BannerHome = ({ banner }) => {
   const classes = useStyles();
-  const [banner, setBanner] = useState(null);
-  const [loading, setLoading] = useState(true);
   const { defaultBanner } = BannerInfo;
+  const bannerShow = banner ? banner : defaultBanner;
 
-  const getBanner = async () => {
-    setLoading(true);
-    try {
-      const config = {
-        timeout: 10000,
-        headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-      };
-      const res = await axios.get('/api/banners_shop', config);
-      if (res.data.length !== 0) {
-        setBanner(res.data[0]);
-      }
-    } catch (err) {
-      setBanner(defaultBanner);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getBanner();
-    // eslint-disable-next-line
-  }, []);
-
-  if (loading) {
-    return <LoadingGif big />;
-  }
   return (
     <section className={classes.root} id="home">
       <Grow in timeout={2000}>
         <picture className={classes.picture}>
-          <img className={classes.img} src={banner.location} alt={banner.key} />
+          <img className={classes.img} src={bannerShow.location} alt={bannerShow.key} />
         </picture>
       </Grow>
       <div className={classes.text}>
-        {banner.subtitle.trim() === '' ? null : (
+        {bannerShow.subtitle.trim() === '' ? null : (
           <Typography className={classes.subtitle} variant="subtitle2" gutterBottom>
-            {banner.subtitle}
+            {bannerShow.subtitle}
           </Typography>
         )}
-        {banner.title.trim() === '' ? null : (
+        {bannerShow.title.trim() === '' ? null : (
           <Typography className={classes.title} variant="h2" gutterBottom>
-            {banner.title}
+            {bannerShow.title}
           </Typography>
         )}
-        {banner.body.trim() === '' ? null : (
+        {bannerShow.body.trim() === '' ? null : (
           <Typography className={classes.body} variant="body1" gutterBottom>
-            {banner.body}
+            {bannerShow.body}
           </Typography>
         )}
-        {banner.caption.trim() === '' ? null : (
+        {bannerShow.caption.trim() === '' ? null : (
           <Typography className={classes.caption} variant="caption" gutterBottom>
-            {banner.caption}
+            {bannerShow.caption}
           </Typography>
         )}
       </div>
@@ -112,4 +85,14 @@ const Banner = () => {
   );
 };
 
-export default Banner;
+BannerHome.propTypes = {
+  banner: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  banner: state.banner,
+});
+
+const BannerHomeWrapper = connect(mapStateToProps, null)(BannerHome);
+
+export default BannerHomeWrapper;

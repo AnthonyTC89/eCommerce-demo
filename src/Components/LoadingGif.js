@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -11,28 +10,15 @@ const useStyles = makeStyles({
     height: window.innerHeight,
     marginTop: window.innerHeight / 3,
   },
-  small: {
-    display: 'block',
-    width: '100%',
-    textAlign: 'center',
-  },
 });
 
-const LoadingGif = ({ big }) => {
+const LoadingGif = () => {
   const classes = useStyles();
   return (
-    <picture className={big ? classes.big : classes.small}>
+    <picture className={classes.big}>
       <CircularProgress />
     </picture>
   );
-};
-
-LoadingGif.propTypes = {
-  big: PropTypes.bool,
-};
-
-LoadingGif.defaultProps = {
-  big: false,
 };
 
 export default LoadingGif;

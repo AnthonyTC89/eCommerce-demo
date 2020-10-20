@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
+// import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import Grid from '@material-ui/core/Grid';
 import Grow from '@material-ui/core/Grow';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { CategoriesInfo } from '../../Info.json';
-import LoadingGif from '../LoadingGif';
+// import LoadingGif from '../LoadingGif';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,33 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CategoriesShow = () => {
+const CategoriesHome = ({ categories }) => {
   const classes = useStyles();
-  const { title, defaultCategories } = CategoriesInfo;
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { title } = CategoriesInfo;
 
-  const getCategories = async () => {
-    setLoading(true);
-    try {
-      const TOKEN = process.env.REACT_APP_TOKEN;
-      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/categories_shop', config);
-      setCategories(res.data);
-    } catch (err) {
-      setCategories(defaultCategories);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getCategories();
-    // eslint-disable-next-line
-  }, []);
-
-  if (loading) {
-    return <LoadingGif big />;
+  if (categories.length === 0) {
+    return null;
   }
   return (
     <section id="categories" className={classes.root}>
@@ -97,4 +78,14 @@ const CategoriesShow = () => {
   );
 };
 
-export default CategoriesShow;
+CategoriesHome.propTypes = {
+  categories: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  categories: state.categories,
+});
+
+const CategoriesHomeWrapper = connect(mapStateToProps, null)(CategoriesHome);
+
+export default CategoriesHomeWrapper;

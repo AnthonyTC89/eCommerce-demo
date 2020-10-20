@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 });
 const noCategory = { id: null, name: 'no category' };
 
-const Article = ({ article, categories, session, favorites, updatingFavorites }) => {
+const Article = ({ history, article, categories, session, favorites, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const { category_id, name, location, text } = article;
@@ -44,32 +44,43 @@ const Article = ({ article, categories, session, favorites, updatingFavorites })
   
   const handleClickFavorite = async (e) => {
     e.preventDefault();
-    const { user } = session;
-    const config = {
-      timeout: 10000,
-      headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-    };
-    try {
-      setLoading(true);
-      if (favorite) {
-        const payload = { status: !favorite.status };
-        const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-        const res = await axios.put(`/api/favorites/${favorite.id}`, { token }, config);
-        console.log(res.statusText);
-        const index = favorites.findIndex((f) => f.id === favorite.id);
-        const auxFavorites = [...favorites];
-        auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
-        updatingFavorites(auxFavorites);
-      } else {
-        const payload = { article_id: article.id, user_id: user.id };
-        const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-        const res = await axios.post('/api/favorites', { token }, config);
-        updatingFavorites([...favorites, res.data]);
+    const { user, isLoggedIn } = session;
+    if (isLoggedIn) {
+      try {
+        setLoading(true);
+        const config = { headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
+        if (favorite) {
+          const payload = { status: !favorite.status };
+          const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
+          const res = await axios.put(`/api/favorites/${favorite.id}`, { token }, config);
+          console.log(res.statusText);
+          const index = favorites.findIndex((f) => f.id === favorite.id);
+          const auxFavorites = [...favorites];
+          auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
+          updatingFavorites(auxFavorites);
+        } else {
+          const payload = { article_id: article.id, user_id: user.id };
+          const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
+          const res = await axios.post('/api/favorites', { token }, config);
+          updatingFavorites([...favorites, res.data]);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+    } else {
+      history.push('/session');
+    }
+  };
+
+  const handleClickAddToCart = async (e) => {
+    e.preventDefault();
+    const { isLoggedIn } = session;
+    if (isLoggedIn) {
+      console.log('Add To Cart');
+    } else {
+      history.push('/session');
     }
   };
 
@@ -95,7 +106,7 @@ const Article = ({ article, categories, session, favorites, updatingFavorites })
           <IconButton aria-label="more info">
             <InfoIcon />
           </IconButton>
-          <IconButton aria-label="add to cart">
+          <IconButton aria-label="add to cart" onClick={handleClickAddToCart}>
             {loading ? <CircularProgress size="1rem" /> : (
               <AddShoppingCartIcon />
             )}
@@ -107,6 +118,7 @@ const Article = ({ article, categories, session, favorites, updatingFavorites })
 };
 
 Article.propTypes = {
+  history: PropTypes.object.isRequired,
   article: PropTypes.object.isRequired,
   categories: PropTypes.array.isRequired,
   favorites: PropTypes.array.isRequired,

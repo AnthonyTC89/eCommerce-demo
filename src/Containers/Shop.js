@@ -65,7 +65,7 @@ const Shop = ({ history, session, updatingFavorites }) => {
       getFavorites();
     }
     // eslint-disable-next-line
-  }, [session]);
+  }, []);
 
   if (loading) {
     return <LoadingGif />;
@@ -79,7 +79,7 @@ const Shop = ({ history, session, updatingFavorites }) => {
             <FiltersList />
           </Grid>
           <Grid item xs={10}>
-            <ArticlesBoard />
+            <ArticlesBoard history={history}/>
             <CategoriesBoard />
           </Grid>
           <Snackbar

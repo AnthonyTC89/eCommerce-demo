@@ -23,7 +23,7 @@ const getArticlesFiltered = (articles, filters) => {
   return articles.filter((article) => article.category_id === category_id);
 };
 
-const ArticlesBoard = ({ articles, categories, filters }) => {
+const ArticlesBoard = ({ history, articles, categories, filters }) => {
   const classes = useStyles();
   const articlesFiltered = getArticlesFiltered(articles, filters);
   const category = categories.find((c) => c.id === filters.category_id)
@@ -36,7 +36,7 @@ const ArticlesBoard = ({ articles, categories, filters }) => {
       </Grid>
       {articlesFiltered.map((article) => (
         <Grid item key={uuidv4()} xs={12} sm={6} md={4} lg={3} xl={2}>
-          <Article article={article} />
+          <Article history={history} article={article} />
         </Grid>
       ))}
     </Grid>
@@ -44,6 +44,7 @@ const ArticlesBoard = ({ articles, categories, filters }) => {
 };
 
 ArticlesBoard.propTypes = {
+  history: PropTypes.object.isRequired,
   articles: PropTypes.array.isRequired,
   categories: PropTypes.array.isRequired,
   filters: PropTypes.object.isRequired,

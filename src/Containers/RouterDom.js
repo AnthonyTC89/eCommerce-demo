@@ -23,7 +23,7 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
   updatingArticles, updatingCategories, updatingSocialNetworks }) => {
   const [loading, setLoading] = useState(true);
   const TOKEN = process.env.REACT_APP_TOKEN;
-  const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
+  const config = { timeout: 50000, headers: { Authorization: `Bearer ${TOKEN}` } };
 
   const getLogo = async () => {
     try {

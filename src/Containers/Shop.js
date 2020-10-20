@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import LoadingGif from '../Components/LoadingGif';
 import FiltersList from '../Components/Shop/FiltersList';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
@@ -25,9 +25,9 @@ const useStyles = makeStyles({
   },
 });
 
-const Shop = ({ history, session, updatingArticles, updatingCategories, updatingFavorites }) => {
+const Shop = ({ history, session, updatingFavorites }) => {
   const classes = useStyles();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const anchorOriginSnackbar = { horizontal: 'center', vertical: 'top' };
 
@@ -36,47 +36,14 @@ const Shop = ({ history, session, updatingArticles, updatingCategories, updating
     headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
   };
 
-  const getArticles = async () => {
-    setMessage(null);
-    try {
-      const res = await axios.get('/api/articles_shop', config);
-      updatingArticles(res.data);
-    } catch (err) {
-      if (err.response) {
-        setMessage(err.response.statusText);
-      } else if (err.message) {
-        setMessage(err.message);
-      } else {
-        setMessage('error');
-      }
-    }
-  };
-
-  const getCategories = async () => {
-    setMessage(null);
-    try {
-      const res = await axios.get('/api/categories_shop', config);
-      updatingCategories(res.data);
-    } catch (err) {
-      if (err.response) {
-        setMessage(err.response.statusText);
-      } else if (err.message) {
-        setMessage(err.message);
-      } else {
-        setMessage('error');
-      }
-    }
-  };
-
   const getFavorites = async () => {
-    if (!session.user) {
-      return;
-    }
+    setLoading(true);
     setMessage(null);
     try {
       const { id } = session.user;
       const res = await axios.get(`/api/customers/${id}/favorites`, config);
       updatingFavorites(res.data);
+      setLoading(false);
     } catch (err) {
       if (err.response) {
         setMessage(err.response.statusText);
@@ -85,6 +52,7 @@ const Shop = ({ history, session, updatingArticles, updatingCategories, updating
       } else {
         setMessage('error');
       }
+      setLoading(false);
     }
   };
 
@@ -93,19 +61,14 @@ const Shop = ({ history, session, updatingArticles, updatingCategories, updating
   };
 
   useEffect(() => {
-    getArticles();
-    getCategories();
-    setLoading(false);
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    getFavorites();
+    if (session.isLoggedIn) {
+      getFavorites();
+    }
     // eslint-disable-next-line
   }, [session]);
 
   if (loading) {
-    return <CircularProgress />;
+    return <LoadingGif />;
   }
   return (
     <>

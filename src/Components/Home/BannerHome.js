@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Typography from '@material-ui/core/Typography';
 import Grow from '@material-ui/core/Grow';
 import { makeStyles } from '@material-ui/core/styles';
-import { BannerInfo } from '../../Info.json';
 
 const useStyles = makeStyles({
   root: {
@@ -49,35 +48,33 @@ const useStyles = makeStyles({
 
 const BannerHome = ({ banner }) => {
   const classes = useStyles();
-  const { defaultBanner } = BannerInfo;
-  const bannerShow = banner ? banner : defaultBanner;
 
   return (
     <section className={classes.root} id="home">
       <Grow in timeout={2000}>
         <picture className={classes.picture}>
-          <img className={classes.img} src={bannerShow.location} alt={bannerShow.key} />
+          <img className={classes.img} src={banner.location} alt={banner.key} />
         </picture>
       </Grow>
       <div className={classes.text}>
-        {bannerShow.subtitle.trim() === '' ? null : (
+        {banner.subtitle.trim() === '' ? null : (
           <Typography className={classes.subtitle} variant="subtitle2" gutterBottom>
-            {bannerShow.subtitle}
+            {banner.subtitle}
           </Typography>
         )}
-        {bannerShow.title.trim() === '' ? null : (
+        {banner.title.trim() === '' ? null : (
           <Typography className={classes.title} variant="h2" gutterBottom>
-            {bannerShow.title}
+            {banner.title}
           </Typography>
         )}
-        {bannerShow.body.trim() === '' ? null : (
+        {banner.body.trim() === '' ? null : (
           <Typography className={classes.body} variant="body1" gutterBottom>
-            {bannerShow.body}
+            {banner.body}
           </Typography>
         )}
-        {bannerShow.caption.trim() === '' ? null : (
+        {banner.caption.trim() === '' ? null : (
           <Typography className={classes.caption} variant="caption" gutterBottom>
-            {bannerShow.caption}
+            {banner.caption}
           </Typography>
         )}
       </div>

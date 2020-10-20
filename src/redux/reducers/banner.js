@@ -1,4 +1,12 @@
-const defaultBanner = null;
+const defaultBanner = {
+  id: null,
+  title: '',
+  subtitle: '',
+  body: '',
+  caption: '',
+  location: 'https://ecommerce-atc.s3-sa-east-1.amazonaws.com/banner01.jpg',
+  key: "Banner",
+};
 
 const banner = (state = defaultBanner, { type, item }) => {
   switch (type) {

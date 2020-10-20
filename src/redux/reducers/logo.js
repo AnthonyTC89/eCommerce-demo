@@ -1,6 +1,6 @@
 const defaultLogo = {
   id: null,
-  text: '',
+  text: 'Default',
   image_id: null,
   location: '',
   key: '',

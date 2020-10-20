@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
@@ -8,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import LoadingGif from '../Components/LoadingGif';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
+import updateAbout from '../redux/actions/updateAbout';
 import { AboutInfo } from '../Info.json';
 
 const useStyles = makeStyles((theme) => ({
@@ -46,10 +48,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const About = ({ history }) => {
+const About = ({ history, about, updatingAbout }) => {
   const classes = useStyles();
-  const { title, defaultAbout } = AboutInfo;
-  const [about, setAbout] = useState({});
+  const { title } = AboutInfo;
   const [loading, setLoading] = useState(true);
 
   const getAbout = async () => {
@@ -58,25 +59,28 @@ const About = ({ history }) => {
       const TOKEN = process.env.REACT_APP_TOKEN;
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
       const res = await axios.get('/api/abouts_shop', config);
+      
       if (res.data.length !== 0) {
-        setAbout(res.data[0]);
+        updatingAbout(res.data[0]);
+        setLoading(false);
       } else {
-        setAbout(defaultAbout);
+        setLoading(false);
+        history.push('/maintenance')
       }
     } catch (err) {
-      setAbout(defaultAbout);
-    } finally {
-      setLoading(false);
+      history.push('/maintenance')
     }
   };
 
   useEffect(() => {
-    getAbout();
+    if (about.id === null) {
+      getAbout();
+    }
     // eslint-disable-next-line
   }, []);
 
   if (loading) {
-    return <LoadingGif big />;
+    return <LoadingGif />;
   }
   return (
     <>
@@ -110,6 +114,18 @@ const About = ({ history }) => {
 
 About.propTypes = {
   history: PropTypes.object.isRequired,
+  about: PropTypes.object.isRequired,
+  updatingAbout: PropTypes.func.isRequired,
 };
 
-export default About;
+const mapStateToProps = (state) => ({
+  about: state.about,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  updatingAbout: (data) => dispatch(updateAbout(data)),
+});
+
+const AboutWrapper = connect(mapStateToProps, mapDispatchToProps)(About);
+
+export default AboutWrapper;

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,7 +20,6 @@ import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
 import Container from '@material-ui/core/Container';
 import updateSession from '../redux/actions/updateSession';
-import LoadingGif from './LoadingGif';
 import { NavbarInfo } from '../Info.json';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,12 +60,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ history, changeSession }) => {
+const Navbar = ({ history, changeSession, logo }) => {
   const classes = useStyles();
-  const [logo, setLogo] = useState({});
-  const [loading, setLoading] = useState(true);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { navItems, defaultLogo } = NavbarInfo;
+  const { navItems } = NavbarInfo;
 
   const handleLogout = () => {
     changeSession(null);
@@ -82,32 +78,6 @@ const Navbar = ({ history, changeSession }) => {
     setDrawerOpen(false);
   };
 
-  const getLogo = async () => {
-    setLoading(true);
-    try {
-      const TOKEN = process.env.REACT_APP_TOKEN;
-      const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
-      const res = await axios.get('/api/logos_shop', config);
-      if (res.data.length !== 0) {
-        setLogo(res.data[0]);
-      } else {
-        setLogo(defaultLogo);
-      }
-    } catch (err) {
-      setLogo(defaultLogo);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getLogo();
-    // eslint-disable-next-line
-  }, []);
-
-  if (loading) {
-    return <LoadingGif big />;
-  }
   return (
     <>
       <AppBar position="static" className={classes.root}>
@@ -213,10 +183,14 @@ Navbar.propTypes = {
   changeSession: PropTypes.func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  logo: state.logo,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   changeSession: (session) => dispatch(updateSession(session)),
 });
 
-const NavbarWrapper = connect(null, mapDispatchToProps)(Navbar);
+const NavbarWrapper = connect(mapStateToProps, mapDispatchToProps)(Navbar);
 
 export default NavbarWrapper;

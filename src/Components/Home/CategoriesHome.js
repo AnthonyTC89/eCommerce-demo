@@ -79,7 +79,7 @@ const CategoriesHome = ({ categories }) => {
 };
 
 CategoriesHome.propTypes = {
-  categories: PropTypes.object.isRequired,
+  categories: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({

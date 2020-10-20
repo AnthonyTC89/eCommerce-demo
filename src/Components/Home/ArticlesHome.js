@@ -44,8 +44,9 @@ const useStyles = makeStyles((theme) => ({
 const ArticlesHome = ({ articles }) => {
   const classes = useStyles();
   const { title } = ArticlesInfo;
+  const articleHome = articles.filter((article) => article.featured === true);
 
-  if (articles.length === 0) {
+  if (articleHome.length === 0) {
     return null;
   }
   return (
@@ -54,7 +55,7 @@ const ArticlesHome = ({ articles }) => {
         {title}
       </Typography>
       <Grid container>
-        {articles.map((item) => (
+        {articleHome.map((item) => (
           <Grid item key={uuidv4()} xs={6} sm={4} md component="article">
             <Grow in timeout={2000} appear mountOnEnter>
               <picture className={classes.picture}>
@@ -75,7 +76,7 @@ const ArticlesHome = ({ articles }) => {
 };
 
 ArticlesHome.propTypes = {
-  articles: PropTypes.object.isRequired,
+  articles: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({

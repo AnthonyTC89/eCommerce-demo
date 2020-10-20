@@ -17,8 +17,10 @@ import updateLogo from '../redux/actions/updateLogo';
 import updateBanner from '../redux/actions/updateBanner';
 import updateArticles from '../redux/actions/updateArticles';
 import updateCategories from '../redux/actions/updateCategories';
+import updateSocialNetworks from '../redux/actions/updateSocialNetworks';
 
-const RouterDom = ({ updatingSession, updatingLogo, updatingBanner, updatingArticles, updatingCategories }) => {
+const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
+  updatingArticles, updatingCategories, updatingSocialNetworks }) => {
   const [loading, setLoading] = useState(true);
   const TOKEN = process.env.REACT_APP_TOKEN;
   const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
@@ -63,6 +65,15 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner, updatingArti
     }
   };
 
+  const getSocialNetworks = async () => {
+    try {
+      const res = await axios.get('/api/social_networks_shop', config);
+      updatingSocialNetworks(res.data);
+    } catch (err) {
+      // no actions
+    }
+  };
+
   const checkLocalStorage = async () => {
     const token = localStorage.getItem('user_token');
     if (token) {
@@ -77,10 +88,11 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner, updatingArti
 
   const getInfo = async () => {
     await checkLocalStorage();
-    await getCategories();
-    await getArticles();
     await getLogo();
     await getBanner();
+    await getCategories();
+    await getArticles();
+    await getSocialNetworks();
     setLoading(false);
   };
 
@@ -115,6 +127,7 @@ RouterDom.propTypes = {
   updatingBanner: PropTypes.func.isRequired,
   updatingArticles: PropTypes.func.isRequired,
   updatingCategories: PropTypes.func.isRequired,
+  updatingSocialNetworks: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -127,6 +140,7 @@ const mapDispatchToProps = (dispatch) => ({
   updatingBanner: (banner) => dispatch(updateBanner(banner)),
   updatingArticles: (data) => dispatch(updateArticles(data)),
   updatingCategories: (data) => dispatch(updateCategories(data)),
+  updatingSocialNetworks: (data) => dispatch(updateSocialNetworks(data)),
 });
 
 const RouterDomWrapper = connect(mapStateToProps, mapDispatchToProps)(RouterDom);

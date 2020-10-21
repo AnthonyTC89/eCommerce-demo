@@ -46,11 +46,11 @@ const Contact = ({ history, contact, updatingContact }) => {
         setLoading(false);
       } else {
         setLoading(false);
-        // history.push('/maintenance')
+        history.push('/maintenance')
       }
     } catch (err) {
       setLoading(false);
-        // history.push('/maintenance')
+      history.push('/maintenance')
     }
   };
 
@@ -79,18 +79,16 @@ const Contact = ({ history, contact, updatingContact }) => {
               <ContactForm />
             </Grid>
           ) : null }
-          {contact.id ? (
-            <Grid item xs={12} sm={4} className={classes.picture}>
-              {googleMapsKey ? (
-                <GoogleMapsAPI
-                  zoom={contact.zoom}
-                  lat={contact.lat}
-                  lng={contact.lng}
-                  googleMapsKey={googleMapsKey}
-                />
-              ): <img className={classes.image} src={contact.location} alt="contact" />}            
-            </Grid>
-          ) : null}
+          <Grid item xs={12} sm={4} className={classes.picture}>
+            {googleMapsKey && contact ? (
+              <GoogleMapsAPI
+                zoom={contact.zoom}
+                lat={contact.lat}
+                lng={contact.lng}
+                googleMapsKey={googleMapsKey}
+              />
+            ): <img className={classes.image} src={contact.location} alt="contact" />}            
+          </Grid>
           <Grid item xs={12} sm={4}>
             <ContactInfo contact={contact} />
           </Grid>

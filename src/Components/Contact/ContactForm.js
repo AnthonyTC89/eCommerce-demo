@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -8,10 +9,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { buttons } from '../../Info.json';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: '2rem auto',
-    padding: '2rem',
-  },
   title: {
     fontWeight: 400,
     fontSize: '3em',
@@ -28,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const defaultInputForm = {
-  from_name: '',
-  from_email: '',
-  message_html: '',
+  username: '',
+  email: '',
+  message: '',
 };
 
 const ContactForm = () => {
@@ -51,34 +48,12 @@ const ContactForm = () => {
     e.preventDefault();
     setMessage(null);
     try {
-      const sendGridKey = process.env.REACT_APP_SENDGRID_API_KEY;
-      const url = 'https://api.sendgrid.com/v3/mail/send';
-      const headers = {
-        'Authorization': `Bearer ${sendGridKey}`,
-        'Content-Type': 'application/json',
-      };
-      const data = {
-        personalizations: [
-          {
-            to: [
-              {
-                email: "ptonyp19@hotmail.com"
-              }
-            ],
-            subject: "Hello, World! subject"
-          }
-        ],
-        from: { email: "ptonyptc@gmail.com" },
-        content: [
-          {
-            type: "text/plain",
-            value: "Hello, World! content"
-          }
-        ]
-      };
-      const res = await axios.post(url, data, { headers });
-      console.log(res);
+      const privateKey = process.env.REACT_APP_PRIVATE_KEY_JWT;
+      const token = jwt.sign(inputForm, privateKey);
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
+      const res = await axios.post('/api/mailer/sendgrid', { token }, config);
       setInputForm(defaultInputForm);
+      setMessage(res.statusText);
     } catch (err) {
       console.log(err);
       setMessage('error');
@@ -91,20 +66,18 @@ const ContactForm = () => {
     <form onSubmit={handleSubmit} className={classes.form}>
       <TextField
         margin="dense"
-        name="from_name"
+        name="username"
         variant="outlined"
-        id="from_name"
-        value={inputForm.from_name}
+        value={inputForm.username}
         label="your name (optional)"
         onChange={handleChange}
       />
       <TextField
         margin="dense"
         type="email"
-        name="from_email"
+        name="email"
         variant="outlined"
-        id="from_email"
-        value={inputForm.from_email}
+        value={inputForm.email}
         label="email"
         onChange={handleChange}
         required
@@ -113,10 +86,9 @@ const ContactForm = () => {
         margin="dense"
         multiline
         rows="8"
-        name="message_html"
+        name="message"
         variant="outlined"
-        id="message_html"
-        value={inputForm.message_html}
+        value={inputForm.message}
         label="type here"
         onChange={handleChange}
         required

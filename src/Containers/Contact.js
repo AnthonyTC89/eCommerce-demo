@@ -8,10 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import GoogleMapsAPI from '../Components/Contact/GoogleMapsAPI';
-import ContactForm from '../Components/Contact/ContactForm';
 import LoadingGif from '../Components/LoadingGif';
 import updateContact from '../redux/actions/updateContact';
+import ContactInfo from '../Components/Contact/ContactInfo';
+import GoogleMapsAPI from '../Components/Contact/GoogleMapsAPI';
+import ContactForm from '../Components/Contact/ContactForm';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -22,10 +23,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   picture: {
-    textAlign: 'center',
-  },
-  image: {
-    width: '10rem',
+    maxWidth: '20rem',
+    height: '20rem',
+    margin: 'auto',
   },
 }));
 
@@ -67,26 +67,30 @@ const Contact = ({ history, contact, updatingContact }) => {
     <>
       <Navbar history={history} />
       <Grow in timeout={2000}>
-        <Grid container justify="space-evenly" alignItems="center" component="main">
+        <Grid container alignItems="center" component="main">
           <Grid item xs={12}>
             <Typography className={classes.title} variant="h2">
               {contact.title}
             </Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={4}>
             <ContactForm />
           </Grid>
-          <Grid item xs={12} md={6} className={classes.picture}>
-            <img className={classes.image} src={contact.location} alt="contact" />
+          <Grid item xs={12} sm={4} className={classes.picture}>
+            {googleMapsKey ? (
+              <GoogleMapsAPI
+                zoom={contact.zoom}
+                lat={contact.lat}
+                lng={contact.lng}
+                googleMapsKey={googleMapsKey}
+              />
+            ): <img className={classes.image} src={contact.location} alt="contact" />}            
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <ContactInfo contact={contact} />
           </Grid>
         </Grid>
       </Grow>
-      <GoogleMapsAPI
-        zoom={contact.zoom}
-        lat={contact.lat}
-        lng={contact.lng}
-        googleMapsKey={googleMapsKey}
-      />
       <Footer />
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -48,11 +49,42 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // eslint-disable-next-line no-console
-    console.log(inputForm);
     setMessage(null);
-    setInputForm(defaultInputForm);
-    setLoading(false);
+    try {
+      const sendGridKey = process.env.REACT_APP_SENDGRID_API_KEY;
+      const url = 'https://api.sendgrid.com/v3/mail/send';
+      const headers = {
+        'Authorization': `Bearer ${sendGridKey}`,
+        'Content-Type': 'application/json',
+      };
+      const data = {
+        personalizations: [
+          {
+            to: [
+              {
+                email: "ptonyp19@hotmail.com"
+              }
+            ],
+            subject: "Hello, World! subject"
+          }
+        ],
+        from: { email: "ptonyptc@gmail.com" },
+        content: [
+          {
+            type: "text/plain",
+            value: "Hello, World! content"
+          }
+        ]
+      };
+      const res = await axios.post(url, data, { headers });
+      console.log(res);
+      setInputForm(defaultInputForm);
+    } catch (err) {
+      console.log(err);
+      setMessage('error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

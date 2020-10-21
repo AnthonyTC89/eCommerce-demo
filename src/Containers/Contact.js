@@ -33,6 +33,7 @@ const Contact = ({ history, contact, updatingContact }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const googleMapsKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+  const sendGridKey = process.env.REACT_APP_SENDGRID_API_KEY;
 
   const getContact = async () => {
     setLoading(true);
@@ -45,11 +46,11 @@ const Contact = ({ history, contact, updatingContact }) => {
         setLoading(false);
       } else {
         setLoading(false);
-        history.push('/maintenance')
+        // history.push('/maintenance')
       }
     } catch (err) {
       setLoading(false);
-        history.push('/maintenance')
+        // history.push('/maintenance')
     }
   };
 
@@ -73,19 +74,23 @@ const Contact = ({ history, contact, updatingContact }) => {
               {contact.title}
             </Typography>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <ContactForm />
-          </Grid>
-          <Grid item xs={12} sm={4} className={classes.picture}>
-            {googleMapsKey ? (
-              <GoogleMapsAPI
-                zoom={contact.zoom}
-                lat={contact.lat}
-                lng={contact.lng}
-                googleMapsKey={googleMapsKey}
-              />
-            ): <img className={classes.image} src={contact.location} alt="contact" />}            
-          </Grid>
+          {sendGridKey ? (
+            <Grid item xs={12} sm={4}>
+              <ContactForm />
+            </Grid>
+          ) : null }
+          {contact.id ? (
+            <Grid item xs={12} sm={4} className={classes.picture}>
+              {googleMapsKey ? (
+                <GoogleMapsAPI
+                  zoom={contact.zoom}
+                  lat={contact.lat}
+                  lng={contact.lng}
+                  googleMapsKey={googleMapsKey}
+                />
+              ): <img className={classes.image} src={contact.location} alt="contact" />}            
+            </Grid>
+          ) : null}
           <Grid item xs={12} sm={4}>
             <ContactInfo contact={contact} />
           </Grid>

@@ -57,14 +57,16 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
     try {
       const privateKey = process.env.REACT_APP_PRIVATE_KEY_JWT;
       const token = jwt.sign(inputForm, privateKey);
-      const res = await axios.post('/api/users/login', { token });
-      localStorage.setItem('user_token', res.data.token);
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
+      const res = await axios.post('/api/customers/login', { token }, config);
+      localStorage.setItem('customer_token', res.data.token);
       setMessage(res.statusText);
       setInputForm(defaultInputForm);
       setLoading(false);
       changeSession(res.data.user);
       history.push('/shop');
     } catch (err) {
+      console.log(err.response)
       setMessage(err.response.statusText);
       setLoading(false);
     }

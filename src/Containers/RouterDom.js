@@ -68,6 +68,7 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
   const getSocialNetworks = async () => {
     try {
       const res = await axios.get('/api/social_networks_shop', config);
+      console.log(res);
       updatingSocialNetworks(res.data);
     } catch (err) {
       // no actions
@@ -75,13 +76,13 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
   };
 
   const checkLocalStorage = async () => {
-    const token = localStorage.getItem('user_token');
+    const token = localStorage.getItem('customer_token');
     if (token) {
       try {
-        const res = await axios.post('/api/users/auto_login', { token }, config);
+        const res = await axios.post('/api/customers/auto_login', { token }, config);
         updatingSession(res.data);
       } catch (err) {
-        localStorage.removeItem('user_token');
+        localStorage.removeItem('customer_token');
       }
     }
   };

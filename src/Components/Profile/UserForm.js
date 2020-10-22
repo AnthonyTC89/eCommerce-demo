@@ -15,7 +15,7 @@ import { UserFormInfo, buttons } from '../../Info.json';
 
 const defaultInputForm = {
   id: '',
-  username: '',
+  // username: '',
   email: '',
   password: '',
   password_confirmation: '',
@@ -97,7 +97,7 @@ const UserForm = ({ session, changeSession }) => {
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <Gravatar email={inputForm.email} />
-      <TextField
+      {/* <TextField
         margin="dense"
         variant="outlined"
         fullWidth
@@ -106,7 +106,7 @@ const UserForm = ({ session, changeSession }) => {
         name="username"
         label="username"
         onChange={handleChange}
-      />
+      /> */}
       <TextField
         margin="dense"
         variant="outlined"

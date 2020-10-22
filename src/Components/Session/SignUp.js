@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const defaultInputForm = {
-  username: '',
+  // username: '',
   email: '',
   password: '',
   password_confirmation: '',
@@ -61,8 +61,9 @@ const SignIn = ({history, changeSession, handleComponent }) => {
       const privateKey = process.env.REACT_APP_PRIVATE_KEY_JWT;
       const token = jwt.sign(inputForm, privateKey);
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
-      const res = await axios.post('/api/users', { token }, config);
-      localStorage.setItem('user_token', res.data.token);
+      const res = await axios.post('/api/customers', { token }, config);
+      console.log(res);
+      localStorage.setItem('customer_token', res.data.token);
       setMessage(res.statusText);
       setInputForm(defaultInputForm);
       setLoading(false);
@@ -88,7 +89,7 @@ const SignIn = ({history, changeSession, handleComponent }) => {
             </Typography>
           )}
           <form className={classes.form} onSubmit={handleSubmit}>
-            <TextField
+            {/* <TextField
               variant="outlined"
               margin="normal"
               required
@@ -98,7 +99,7 @@ const SignIn = ({history, changeSession, handleComponent }) => {
               value={inputForm.username}
               autoComplete="username"
               onChange={handleChange}
-            />
+            /> */}
             <TextField
               variant="outlined"
               margin="normal"

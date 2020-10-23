@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   picture: {
-    maxWidth: '20rem',
     margin: 'auto',
+    height: '20rem',
   },
   image: {
     width: '100%',

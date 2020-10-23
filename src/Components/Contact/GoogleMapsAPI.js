@@ -27,7 +27,6 @@ GoogleMapsAPI.propTypes = {
   zoom: PropTypes.number.isRequired,
   lat: PropTypes.string.isRequired,
   lng: PropTypes.string.isRequired,
-  googleMapsKey: PropTypes.string.isRequired,
 };
 
 export default GoogleMapsAPI;

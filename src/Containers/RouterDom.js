@@ -68,7 +68,6 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
   const getSocialNetworks = async () => {
     try {
       const res = await axios.get('/api/social_networks_shop', config);
-      console.log(res);
       updatingSocialNetworks(res.data);
     } catch (err) {
       // no actions

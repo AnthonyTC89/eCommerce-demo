@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -44,7 +43,8 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
   
   const handleClickFavorite = async (e) => {
     e.preventDefault();
-    const { user, isLoggedIn } = session;
+    const { customer, isLoggedIn } = session;
+    console.log('session: ', session);
     if (isLoggedIn) {
       try {
         setLoading(true);
@@ -52,16 +52,16 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
         if (favorite) {
           const payload = { status: !favorite.status };
           const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-          const res = await axios.put(`/api/favorites/${favorite.id}`, { token }, config);
+          const res = await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);
           console.log(res.statusText);
           const index = favorites.findIndex((f) => f.id === favorite.id);
           const auxFavorites = [...favorites];
           auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
           updatingFavorites(auxFavorites);
         } else {
-          const payload = { article_id: article.id, user_id: user.id };
+          const payload = { article_id: article.id, customer_id: customer.id };
           const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-          const res = await axios.post('/api/favorites', { token }, config);
+          const res = await axios.post(`/api/customers/${customer.id}/favorites`, { token }, config);
           updatingFavorites([...favorites, res.data]);
         }
       } catch (err) {

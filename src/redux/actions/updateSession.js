@@ -1,4 +1,4 @@
 export const type = 'UPDATE_SESSION';
-const updateSession = (user) => ({ type, user });
+const updateSession = (customer) => ({ type, customer });
 
 export default updateSession;

@@ -40,8 +40,8 @@ const Shop = ({ history, session, updatingFavorites }) => {
     setLoading(true);
     setMessage(null);
     try {
-      const { id } = session.user;
-      const res = await axios.get(`/api/customers/${id}/favorites`, config);
+      const { customer } = session;
+      const res = await axios.get(`/api/customers/${customer.id}/favorites`, config);
       updatingFavorites(res.data);
       setLoading(false);
     } catch (err) {

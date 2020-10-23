@@ -79,7 +79,7 @@ const RouterDom = ({ updatingSession, updatingLogo, updatingBanner,
     if (token) {
       try {
         const res = await axios.post('/api/customers/auto_login', { token }, config);
-        updatingSession(res.data);
+        updatingSession(res.data.customer);
       } catch (err) {
         localStorage.removeItem('customer_token');
       }

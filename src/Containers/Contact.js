@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   picture: {
-    margin: 'auto',
+    padding: '1rem',
     height: '20rem',
   },
   image: {

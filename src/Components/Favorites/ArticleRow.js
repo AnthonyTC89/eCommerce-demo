@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const ArticleRow = ({ article, categories, favorites, updatingFavorites }) => {
+const ArticleRow = ({ session, article, categories, favorites, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const category = categories.find((c) => c.id === article.category_id);
@@ -42,17 +42,18 @@ const ArticleRow = ({ article, categories, favorites, updatingFavorites }) => {
         timeout: 10000,
         headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
       };
+      const { customer } = session;
       const payload = { status: !favorite.status };
       const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-      const res = await axios.put(`/api/favorites/${favorite.id}`, { token }, config);
+      const res = await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);
       console.log(res.statusText);
       const index = favorites.findIndex((f) => f.id === favorite.id);
       const auxFavorites = [...favorites];
       auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
+      setLoading(false);
       updatingFavorites(auxFavorites);
     } catch (err) {
       console.log(err);
-    } finally {
       setLoading(false);
     }
   };
@@ -96,6 +97,7 @@ const ArticleRow = ({ article, categories, favorites, updatingFavorites }) => {
 };
 
 ArticleRow.propTypes = {
+  session: PropTypes.object.isRequired,
   article: PropTypes.object.isRequired,
   categories: PropTypes.array.isRequired,
   favorites: PropTypes.array.isRequired,
@@ -103,6 +105,7 @@ ArticleRow.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  session: state.session,
   categories: state.categories,
   favorites: state.favorites,
 });

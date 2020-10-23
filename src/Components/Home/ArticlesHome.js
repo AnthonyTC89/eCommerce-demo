@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     textAlign: 'center',
     margin: '2rem auto',
-    padding: '2rem',
   },
   title: {
     fontWeight: 400,

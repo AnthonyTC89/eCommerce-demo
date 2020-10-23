@@ -33,43 +33,11 @@ const Favorites = ({ history, session, articles, categories, favorites,
   const TOKEN = process.env.REACT_APP_TOKEN;
   const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
 
-  const getArticles = async () => {
-    setMessage(null);
-    try {
-      const res = await axios.get('/api/articles_shop', config);
-      updatingArticles(res.data);
-    } catch (err) {
-      if (err.response) {
-        setMessage(err.response.statusText);
-      } else if (err.message) {
-        setMessage(err.message);
-      } else {
-        setMessage('error');
-      }
-    }
-  };
-
-  const getCategories = async () => {
-    setMessage(null);
-    try {
-      const res = await axios.get('/api/categories_shop', config);
-      updatingCategories(res.data);
-    } catch (err) {
-      if (err.response) {
-        setMessage(err.response.statusText);
-      } else if (err.message) {
-        setMessage(err.message);
-      } else {
-        setMessage('error');
-      }
-    }
-  };
-
   const getFavorites = async () => {
     setMessage(null);
     try {
-      const { id } = session.user;
-      const res = await axios.get(`/api/customers/${id}/favorites`, config);
+      const { customer } = session;
+      const res = await axios.get(`/api/customers/${customer.id}/favorites`, config);
       updatingFavorites(res.data);
     } catch (err) {
       if (err.response) {
@@ -78,7 +46,9 @@ const Favorites = ({ history, session, articles, categories, favorites,
         setMessage(err.message);
       } else {
         setMessage('error');
-      }
+      } 
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,24 +56,11 @@ const Favorites = ({ history, session, articles, categories, favorites,
     setMessage(null);
   };
 
-  const getInfo = async () => {
-    if (articles.length === 0) {
-      await getArticles();
-    }
-    if (categories.length === 0) {
-      await getCategories();
-    }
-    if (favorites.length === 0) {
-      await getFavorites();
-    }
-    setLoading(false);
-  };
-
   useEffect(() => {
     if (!session.isLoggedIn) {
       history.push('/session');
     } else {
-      getInfo();
+      getFavorites();
     }
     // eslint-disable-next-line
   }, []);

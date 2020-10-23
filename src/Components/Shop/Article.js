@@ -44,7 +44,6 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
   const handleClickFavorite = async (e) => {
     e.preventDefault();
     const { customer, isLoggedIn } = session;
-    console.log('session: ', session);
     if (isLoggedIn) {
       try {
         setLoading(true);

@@ -16,6 +16,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import updateFavorites from '../../redux/actions/updateFavorites';
+import SnackbarAlert from '../SnackbarAlert';
 
 const useStyles = makeStyles({
   root: {
@@ -35,12 +36,21 @@ const noCategory = { id: null, name: 'no category' };
 const Article = ({ history, article, categories, session, favorites, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
   const { category_id, name, location, text } = article;
   
   const category = categories.find((item) => item.id === category_id) || noCategory;
   const favorite = favorites.find((f) => f.article_id === article.id);
   const isFavorite = favorite && favorite.status;
-  
+
+  const handleSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setOpen(true);
+  };
+
   const handleClickFavorite = async (e) => {
     e.preventDefault();
     const { customer, isLoggedIn } = session;
@@ -57,14 +67,16 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
           const auxFavorites = [...favorites];
           auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
           updatingFavorites(auxFavorites);
+          handleSnackbar('Success!', 'success');
         } else {
           const payload = { article_id: article.id, customer_id: customer.id };
           const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
           const res = await axios.post(`/api/customers/${customer.id}/favorites`, { token }, config);
           updatingFavorites([...favorites, res.data]);
+          handleSnackbar('Success!', 'success');
         }
       } catch (err) {
-        console.log(err);
+        handleSnackbar('error', 'error');
       } finally {
         setLoading(false);
       }
@@ -111,6 +123,13 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
             )}
           </IconButton>
         </CardActions>
+        <SnackbarAlert
+          open={open}
+          message={message}
+          severity={severity}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        />
       </Card>
     </Grow>
   );

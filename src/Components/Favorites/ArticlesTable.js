@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 const ArticlesTable = ({ articles, favorites }) => {
   const classes = useStyles();
+
   const arrayFavorites = favorites.reduce((array, favorite) => {
     if (favorite.status) {
       array.push(favorite.article_id);

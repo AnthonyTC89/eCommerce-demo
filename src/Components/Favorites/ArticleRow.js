@@ -14,6 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import { Typography } from '@material-ui/core';
 import updateFavorites from '../../redux/actions/updateFavorites';
+import SnackbarAlert from '../SnackbarAlert';
 
 const useStyles = makeStyles({
   root: {
@@ -32,6 +33,17 @@ const useStyles = makeStyles({
 const ArticleRow = ({ session, article, categories, favorites, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
+
+  // eslint-disable-next-line no-unused-vars
+  const handleSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setOpen(true);
+  };
+
   const category = categories.find((c) => c.id === article.category_id);
   const favorite = favorites.find((f) => f.article_id === article.id);
 
@@ -53,7 +65,6 @@ const ArticleRow = ({ session, article, categories, favorites, updatingFavorites
       setLoading(false);
       updatingFavorites(auxFavorites);
     } catch (err) {
-      console.log(err);
       setLoading(false);
     }
   };
@@ -91,6 +102,13 @@ const ArticleRow = ({ session, article, categories, favorites, updatingFavorites
             {loading ? <CircularProgress /> : <AddShoppingCartIcon />}
           </IconButton>
         </TableCell>
+        <SnackbarAlert
+          open={open}
+          message={message}
+          severity={severity}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        />
       </TableRow>
     </Grow>
   );

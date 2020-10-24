@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 const UserForm = ({ session, changeSession }) => {
   const classes = useStyles();
   const [inputForm, setInputForm] = useState(defaultInputForm);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
   const { update, wait } = buttons;
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 import { buttons } from '../../Info.json';
+import SnackbarAlert from '../SnackbarAlert';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -34,8 +34,16 @@ const ContactForm = () => {
   const classes = useStyles();
   const [inputForm, setInputForm] = useState(defaultInputForm);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('');
   const { wait, send } = buttons;
+
+  const handleSnackbar = (message, severity) => {
+    setMessage(message);
+    setSeverity(severity);
+    setOpen(true);
+  };
 
   const handleChange = (e) => {
     e.persist();
@@ -46,17 +54,16 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(null);
+    setLoading(true);
     try {
       const privateKey = process.env.REACT_APP_PRIVATE_KEY_JWT;
       const token = jwt.sign(inputForm, privateKey);
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
-      const res = await axios.post('/api/mailer/sendgrid', { token }, config);
+      await axios.post('/api/mailer/sendgrid', { token }, config);
       setInputForm(defaultInputForm);
-      setMessage(res.statusText);
+      handleSnackbar(`Email Sent. Thank you!`, 'success');
     } catch (err) {
-      console.log(err);
-      setMessage('error');
+      handleSnackbar('Email not sent. Try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -103,11 +110,13 @@ const ContactForm = () => {
       >
         {loading ? wait : send}
       </Button>
-      {message === null ? null : (
-        <Typography variant="subtitle2" color="error" gutterBottom>
-          {message}
-        </Typography>
-      )}
+      <SnackbarAlert
+        open={open}
+        message={message}
+        severity={severity}
+        onClose={() => setOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      />
     </form>
   );
 };

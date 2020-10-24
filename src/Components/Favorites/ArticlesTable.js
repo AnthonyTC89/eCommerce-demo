@@ -43,7 +43,7 @@ const ArticlesTable = ({ articles, favorites }) => {
       <Table className={classes.table} aria-label="articles table">
         <TableBody>
           {favoriteArticles.map((article) => (
-            <ArticleRow key={uuidv4()} article={article} />
+            <ArticleRow key={uuidv4()} article={article} favorites={favorites}/>
           ))}
         </TableBody>
       </Table>

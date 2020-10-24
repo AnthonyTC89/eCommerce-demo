@@ -14,7 +14,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import { Typography } from '@material-ui/core';
 import updateFavorites from '../../redux/actions/updateFavorites';
-import SnackbarAlert from '../SnackbarAlert';
 
 const useStyles = makeStyles({
   root: {
@@ -33,16 +32,6 @@ const useStyles = makeStyles({
 const ArticleRow = ({ session, article, categories, favorites, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState('');
-
-  // eslint-disable-next-line no-unused-vars
-  const handleSnackbar = (message, severity) => {
-    setMessage(message);
-    setSeverity(severity);
-    setOpen(true);
-  };
 
   const category = categories.find((c) => c.id === article.category_id);
   const favorite = favorites.find((f) => f.article_id === article.id);
@@ -57,8 +46,7 @@ const ArticleRow = ({ session, article, categories, favorites, updatingFavorites
       const { customer } = session;
       const payload = { status: !favorite.status };
       const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
-      const res = await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);
-      console.log(res.statusText);
+      await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);     
       const index = favorites.findIndex((f) => f.id === favorite.id);
       const auxFavorites = [...favorites];
       auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
@@ -102,13 +90,6 @@ const ArticleRow = ({ session, article, categories, favorites, updatingFavorites
             {loading ? <CircularProgress /> : <AddShoppingCartIcon />}
           </IconButton>
         </TableCell>
-        <SnackbarAlert
-          open={open}
-          message={message}
-          severity={severity}
-          onClose={() => setOpen(false)}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        />
       </TableRow>
     </Grow>
   );
@@ -125,7 +106,6 @@ ArticleRow.propTypes = {
 const mapStateToProps = (state) => ({
   session: state.session,
   categories: state.categories,
-  favorites: state.favorites,
 });
 
 const mapDispatchToProps = (dispatch) => ({

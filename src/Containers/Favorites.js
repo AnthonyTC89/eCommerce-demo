@@ -5,13 +5,10 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import ArticlesTable from '../Components/Favorites/ArticlesTable';
-import updateArticles from '../redux/actions/updateArticles';
-import updateCategories from '../redux/actions/updateCategories';
 import updateFavorites from '../redux/actions/updateFavorites';
 
 const useStyles = makeStyles({
@@ -23,37 +20,22 @@ const useStyles = makeStyles({
   },
 });
 
-const Favorites = ({ history, session, articles, categories, favorites,
-  updatingArticles, updatingCategories, updatingFavorites }) => {
+const Favorites = ({ history, session, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState(null);
-
-  const anchorOriginSnackbar = { horizontal: 'center', vertical: 'top' };
   const TOKEN = process.env.REACT_APP_TOKEN;
   const config = { timeout: 10000, headers: { Authorization: `Bearer ${TOKEN}` } };
 
   const getFavorites = async () => {
-    setMessage(null);
     try {
       const { customer } = session;
       const res = await axios.get(`/api/customers/${customer.id}/favorites`, config);
       updatingFavorites(res.data);
     } catch (err) {
-      if (err.response) {
-        setMessage(err.response.statusText);
-      } else if (err.message) {
-        setMessage(err.message);
-      } else {
-        setMessage('error');
-      } 
+      // no actions
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setMessage(null);
   };
 
   useEffect(() => {
@@ -74,13 +56,6 @@ const Favorites = ({ history, session, articles, categories, favorites,
       <Grow in timeout={2000}>
         <Grid container component="main" className={classes.root}>
           <ArticlesTable />
-          <Snackbar
-            className={classes.snackbar}
-            anchorOrigin={anchorOriginSnackbar}
-            open={message !== null}
-            onClose={handleCloseSnackbar}
-            message={message}
-          />
         </Grid>
       </Grow>
       <Footer />
@@ -91,24 +66,14 @@ const Favorites = ({ history, session, articles, categories, favorites,
 Favorites.propTypes = {
   history: PropTypes.object.isRequired,
   session: PropTypes.object.isRequired,
-  articles: PropTypes.array.isRequired,
-  categories: PropTypes.array.isRequired,
-  favorites: PropTypes.array.isRequired,
-  updatingArticles: PropTypes.func.isRequired,
-  updatingCategories: PropTypes.func.isRequired,
   updatingFavorites: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   session: state.session,
-  articles: state.articles,
-  categories: state.categories,
-  favorites: state.favorites,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updatingArticles: (data) => dispatch(updateArticles(data)),
-  updatingCategories: (data) => dispatch(updateCategories(data)),
   updatingFavorites: (data) => dispatch(updateFavorites(data)),
 });
 

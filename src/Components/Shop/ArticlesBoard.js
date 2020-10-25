@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Article from './Article';
+
 
 const useStyles = makeStyles({
   root: {
@@ -43,7 +45,9 @@ const ArticlesBoard = ({ history, articles, categories, filters }) => {
   return (
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.title}>
-        <h2>{category.name}</h2>
+        <Typography variant="h4" align="center">
+          {category.name}
+        </Typography>
       </Grid>
       {articlesFiltered.map((article) => (
         <Grid item key={uuidv4()} xs={12} sm={6} md={4} lg={3} xl={2}>

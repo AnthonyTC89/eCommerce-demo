@@ -10,10 +10,10 @@ import Article from './Article';
 
 const useStyles = makeStyles({
   root: {
-    margin: '1rem',
+    padding: '1rem',
   },
   title: {
-    textAlign: 'center',
+    margin: '1rem',
   },
 });
 

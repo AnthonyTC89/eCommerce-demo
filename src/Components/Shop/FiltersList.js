@@ -12,7 +12,7 @@ import updateFilters from '../../redux/actions/updateFilters';
 
 const FiltersList = ({ categories, filters, updatingFilters }) => {
   const handleFeatured = () => {
-    updatingFilters({ ...filters, featured: true });
+    updatingFilters({ ...filters, category_id: null, featured: true });
   };
 
   const handleCategory = (category) => {

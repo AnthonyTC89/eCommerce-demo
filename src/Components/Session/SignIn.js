@@ -63,7 +63,7 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
       setMessage(res.statusText);
       setInputForm(defaultInputForm);
       setLoading(false);
-      changeSession(res.data.user);
+      changeSession(res.data.customer);
       history.push('/shop');
     } catch (err) {
       console.log(err.response)

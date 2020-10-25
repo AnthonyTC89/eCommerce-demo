@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ history, changeSession, logo }) => {
+const Navbar = ({ session, history, changeSession, logo }) => {
   const classes = useStyles();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { navItems } = NavbarInfo;
@@ -148,9 +148,11 @@ const Navbar = ({ history, changeSession, logo }) => {
             <IconButton onClick={() => handleHistory('/session')} color="inherit">
               <AccountCircleIcon fontSize="small" />
             </IconButton>
-            <IconButton onClick={handleLogout} color="inherit">
-              <ExitToAppIcon fontSize="small" />
-            </IconButton>
+            {session.isLoggedIn ? (
+              <IconButton onClick={handleLogout} color="inherit">
+                <ExitToAppIcon fontSize="small" />
+              </IconButton>
+            ) : null}
           </Container>
         </Toolbar>
       </AppBar>
@@ -179,11 +181,13 @@ const Navbar = ({ history, changeSession, logo }) => {
 };
 
 Navbar.propTypes = {
+  session: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   changeSession: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  session: state.session,
   logo: state.logo,
 });
 

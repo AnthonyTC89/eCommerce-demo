@@ -56,8 +56,7 @@ const ContactForm = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const privateKey = process.env.REACT_APP_PRIVATE_KEY_JWT;
-      const token = jwt.sign(inputForm, privateKey);
+      const token = jwt.sign(inputForm, process.env.REACT_APP_PRIVATE_KEY_JWT);
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
       await axios.post('/api/mailer/sendgrid', { token }, config);
       setInputForm(defaultInputForm);
@@ -115,7 +114,7 @@ const ContactForm = () => {
         message={message}
         severity={severity}
         onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       />
     </form>
   );

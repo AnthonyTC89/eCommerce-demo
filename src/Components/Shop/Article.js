@@ -21,16 +21,13 @@ import SnackbarAlert from '../SnackbarAlert';
 const useStyles = makeStyles({
   root: {
     margin: '0.5rem',
-    position: 'relative',
-  },
-  backdrop: {
-    position: 'absolute',
   },
   media: {
     height: 0,
-    paddingTop: '56.25%', // 16:9
+    paddingTop: '56.25%',
   },
 });
+
 const noCategory = { id: null, name: 'no category' };
 
 const Article = ({ history, article, categories, session, favorites, updatingFavorites }) => {
@@ -128,7 +125,7 @@ const Article = ({ history, article, categories, session, favorites, updatingFav
           message={message}
           severity={severity}
           onClose={() => setOpen(false)}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         />
       </Card>
     </Grow>

@@ -22,6 +22,8 @@ import SnackbarAlert from '../SnackbarAlert';
 const useStyles = makeStyles({
   root: {
     margin: '2rem',
+    position: 'relative',
+    minHeight: '6rem',
   },
   title: {
     marginTop: '1rem',
@@ -69,14 +71,14 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
       const favorite = favorites.find((favorite) => favorite.article_id === article.id && favorite.customer_id === customer.id);
       const payload = { status: !favorite.status };
-      const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
+      const token = jwt.sign(payload, 'process.env.REACT_APP_PRIVATE_KEY_JWT');
       await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);     
       const index = favorites.findIndex((f) => f.id === favorite.id);
       const auxFavorites = [...favorites];
       auxFavorites[index] = { ...auxFavorites[index], status: !auxFavorites[index].status };
       setLoading(false);
       updatingFavorites(auxFavorites);
-      handleSnackbar(`Success!`, 'success');
+      handleSnackbar(`Removed!`, 'info');
     } catch (err) {
       handleSnackbar(`Error!`, 'error');
       setLoading(false);
@@ -101,8 +103,7 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
               </TableCell>
               <TableCell>
                 <Typography variant="caption" gutterBottom component="small">
-                  {console.log(categories)}
-                  category name
+                  {categories.find((c) => c.id === article.category_id).name}
                 </Typography>
                 <Typography variant="h5" gutterBottom>
                   {article.name}
@@ -120,11 +121,11 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
                 </Typography>
               </TableCell>
               <TableCell align="right">
-                <IconButton aria-label="more info" onClick={() => handleDelete(article)}>
-                  {loading ? <CircularProgress /> : <DeleteIcon />}
-                </IconButton>
-                <IconButton aria-label="more info">
+                <IconButton>
                   {loading ? <CircularProgress /> : <AddShoppingCartIcon />}
+                </IconButton>
+                <IconButton color="secondary" onClick={() => handleDelete(article)}>
+                  {loading ? <CircularProgress /> : <DeleteIcon />}
                 </IconButton>
               </TableCell>
             </TableRow>
@@ -136,7 +137,7 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
         message={message}
         severity={severity}
         onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       />
     </TableContainer>
   );

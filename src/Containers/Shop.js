@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Grow from '@material-ui/core/Grow';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
 import LoadingGif from '../Components/LoadingGif';
 import FiltersList from '../Components/Shop/FiltersList';
 import Navbar from '../Components/Navbar';
@@ -15,32 +14,25 @@ import ArticlesBoard from '../Components/Shop/ArticlesBoard';
 import updateArticles from '../redux/actions/updateArticles';
 import updateCategories from '../redux/actions/updateCategories';
 import updateFavorites from '../redux/actions/updateFavorites';
+import SnackbarAlert from '../Components/SnackbarAlert';
 
 const useStyles = makeStyles({
   root: {
     position: 'relative',
-  },
-  snackbar: {
-    position: 'absolute',
   },
 });
 
 const Shop = ({ history, session, updatingFavorites }) => {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
-  const anchorOriginSnackbar = { horizontal: 'center', vertical: 'top' };
-
-  const config = {
-    timeout: 10000,
-    headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` },
-  };
+  const [message, setMessage] = useState('');
 
   const getFavorites = async () => {
     setLoading(true);
-    setMessage(null);
+    setMessage('');
     try {
       const { customer } = session;
+      const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
       const res = await axios.get(`/api/customers/${customer.id}/favorites`, config);
       updatingFavorites(res.data);
       setLoading(false);
@@ -54,10 +46,6 @@ const Shop = ({ history, session, updatingFavorites }) => {
       }
       setLoading(false);
     }
-  };
-
-  const handleCloseSnackbar = () => {
-    setMessage(null);
   };
 
   useEffect(() => {
@@ -82,12 +70,12 @@ const Shop = ({ history, session, updatingFavorites }) => {
             <ArticlesBoard history={history}/>
             <CategoriesBoard />
           </Grid>
-          <Snackbar
-            className={classes.snackbar}
-            anchorOrigin={anchorOriginSnackbar}
-            open={message !== null}
-            onClose={handleCloseSnackbar}
+          <SnackbarAlert
+            open={message !== ''}
             message={message}
+            severity='error'
+            onClose={() => setMessage('')}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           />
         </Grid>
       </Grow>

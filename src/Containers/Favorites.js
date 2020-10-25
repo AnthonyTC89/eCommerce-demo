@@ -15,9 +15,6 @@ const useStyles = makeStyles({
   root: {
     position: 'relative',
   },
-  snackbar: {
-    position: 'absolute',
-  },
 });
 
 const Favorites = ({ history, session, updatingFavorites }) => {

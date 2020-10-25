@@ -15,6 +15,9 @@ import GoogleMapsAPI from '../Components/Contact/GoogleMapsAPI';
 import ContactForm from '../Components/Contact/ContactForm';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    position: 'relative',
+  },
   title: {
     fontWeight: 400,
     fontSize: '3em',
@@ -71,7 +74,7 @@ const Contact = ({ history, contact, updatingContact }) => {
     <>
       <Navbar history={history} />
       <Grow in timeout={2000}>
-        <Grid container alignItems="center" component="main">
+        <Grid container alignItems="center" component="main" className={classes.root}>
           <Grid item xs={12}>
             <Typography className={classes.title} variant="h2">
               {contact.title}

@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
   },
   form: {
+    padding: '1rem',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -72,6 +73,7 @@ const ContactForm = () => {
     <form onSubmit={handleSubmit} className={classes.form}>
       <TextField
         margin="dense"
+        fullWidth
         name="username"
         variant="outlined"
         value={inputForm.username}
@@ -80,6 +82,7 @@ const ContactForm = () => {
       />
       <TextField
         margin="dense"
+        fullWidth
         type="email"
         name="email"
         variant="outlined"
@@ -90,6 +93,7 @@ const ContactForm = () => {
       />
       <TextField
         margin="dense"
+        fullWidth
         multiline
         rows="8"
         name="message"

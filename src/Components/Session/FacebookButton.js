@@ -1,6 +1,7 @@
 import React from 'react';
 import FacebookLogin from 'react-facebook-login';
 import PropTypes from 'prop-types';
+import './FacebookButton.css';
 
 const FacebookButton = ({ handleCallback, textButton }) => (
   <FacebookLogin
@@ -9,6 +10,7 @@ const FacebookButton = ({ handleCallback, textButton }) => (
     size="small"
     textButton={textButton}
     icon="fa-facebook"
+    cssClass="MuiButtonBase-root MuiButton-root MuiButton-contained btn-facebook"
     callback={handleCallback}
   />
 );

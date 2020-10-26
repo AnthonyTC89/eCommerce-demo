@@ -28,11 +28,14 @@ const useStyles = makeStyles({
     display: 'flex',
     flexDirection: 'column',
   },
+  submit: {
+    margin: '1rem',
+  },
   btnLink: {
     textTransform: 'none',
   },
   oAuthGroup: {
-    height: '6rem',
+    height: '7rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -91,10 +94,10 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
 
   return (
     <Grow in timeout={2000}>
-      <Container component="section" maxWidth="xs">
+      <Container component="section">
         <CssBaseline />
         <div className={classes.paper}>
-          <Typography variant="h5" color="primary">
+          <Typography variant="h4" color="primary">
             {SignInInfo.title}
           </Typography>
           {message === null ? null : (

@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Article from './Article';
 
-
 const useStyles = makeStyles({
   root: {
     padding: '1rem',

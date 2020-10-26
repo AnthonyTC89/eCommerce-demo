@@ -2,24 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
-import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Category from './Category';
 
-const CategoriesBoard = ({ categories }) => (
-  <Grid container>
-    <Grid item xs={12}>
-      <Typography variant="h4" align="center">
-        All Categories
-      </Typography>
-    </Grid>
-    {categories.map((category) => (
-      <Grid item key={uuidv4()} xs={6} sm={4} md={3} lg={2} xl={1}>
-        <Category category={category} />
+const useStyles = makeStyles({
+  root: {
+    padding: '1rem',
+  },
+  title: {
+    margin: '1rem',
+  },
+});
+
+const CategoriesBoard = ({ categories }) => {
+  const classes = useStyles();
+  return (
+    <Grid container className={classes.root}>
+      <Grid item xs={12} className={classes.title}>
+        <Typography variant="h4" align="center">
+          All Categories
+        </Typography>
       </Grid>
-    ))}
-  </Grid>
-);
+      {categories.map((category) => (
+        <Grid item key={uuidv4()} xs={6} sm={4} md>
+          <Category category={category} />
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
 
 CategoriesBoard.propTypes = {
   categories: PropTypes.array.isRequired,

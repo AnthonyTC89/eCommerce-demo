@@ -58,6 +58,14 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
     return array;
   }, []);
 
+  const getCategoryName = (article) => {
+    const category = categories.find((c) => c.id === article.category_id);
+    if (category) {
+      return category.name;
+    }
+    return 'no category';
+  };
+
   const handleSnackbar = (message, severity) => {
     setMessage(message);
     setSeverity(severity);
@@ -71,7 +79,7 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
       const config = { timeout: 10000, headers: { Authorization: `Bearer ${process.env.REACT_APP_TOKEN}` } };
       const favorite = favorites.find((favorite) => favorite.article_id === article.id && favorite.customer_id === customer.id);
       const payload = { status: !favorite.status };
-      const token = jwt.sign(payload, 'process.env.REACT_APP_PRIVATE_KEY_JWT');
+      const token = jwt.sign(payload, process.env.REACT_APP_PRIVATE_KEY_JWT);
       await axios.put(`/api/customers/${customer.id}/favorites/${favorite.id}`, { token }, config);     
       const index = favorites.findIndex((f) => f.id === favorite.id);
       const auxFavorites = [...favorites];
@@ -103,7 +111,7 @@ const ArticlesTable = ({ session, articles, favorites, categories, updatingFavor
               </TableCell>
               <TableCell>
                 <Typography variant="caption" gutterBottom component="small">
-                  {categories.find((c) => c.id === article.category_id).name}
+                  {getCategoryName(article)}
                 </Typography>
                 <Typography variant="h5" gutterBottom>
                   {article.name}

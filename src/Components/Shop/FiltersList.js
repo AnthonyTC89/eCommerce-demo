@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import StarIcon from '@material-ui/icons/Star';
 import updateFilters from '../../redux/actions/updateFilters';
 
 const FiltersList = ({ categories, filters, updatingFilters }) => {
@@ -16,15 +14,16 @@ const FiltersList = ({ categories, filters, updatingFilters }) => {
   };
 
   const handleCategory = (category) => {
-    updatingFilters({ ...filters, category_id: category.id, featured: false });
+    if (category) {
+      updatingFilters({ ...filters, category_id: category.id , featured: false });
+    } else {
+      updatingFilters({ ...filters, category_id: null, featured: false });
+    }
   };
 
   return (
     <List component="nav">
       <ListItem button onClick={handleFeatured}>
-        <ListItemIcon>
-          <StarIcon fontSize="small" />
-        </ListItemIcon>
         <ListItemText primary="Featured" />
       </ListItem>
       <Divider />
@@ -36,6 +35,9 @@ const FiltersList = ({ categories, filters, updatingFilters }) => {
           <Divider />
         </Fragment>
       ))}
+      <ListItem button onClick={() => handleCategory(null)}>
+        <ListItemText primary="No Category" />
+      </ListItem>
     </List>
   );
 };

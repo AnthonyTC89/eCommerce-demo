@@ -14,11 +14,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import updateSession from '../../redux/actions/updateSession';
 import { SignInInfo, buttons } from '../../Info.json';
 import FacebookButton from './FacebookButton';
+import GoogleButton from "./GoogleButton";
 import { Divider } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   paper: {
-    margin: theme.spacing(8),
+    margin: '1rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -27,28 +28,32 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
   btnLink: {
     textTransform: 'none',
   },
   oAuthGroup: {
-    textAlign: 'center',
-    marginTop: '1rem',
+    height: '6rem',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
-}));
+});
 
 const defaultInputForm = {
   email: '',
   password: '',
 };
 
+const FACEBOOK_KEY = 'null';
+const GOOGLE_KEY = 'null';
+
 const SignIn = ({ history, changeSession, handleComponent }) => {
   const classes = useStyles();
   const [inputForm, setInputForm] = useState(defaultInputForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  
   const { signin, wait } = buttons;
 
   const handleCallbackFacebook = (response) => {
@@ -124,7 +129,6 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
             />
             <Button
               type="submit"
-              fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
@@ -142,7 +146,17 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
             </Button>
             <Divider />
             <div className={classes.oAuthGroup}>
-              <FacebookButton handleCallback={handleCallbackFacebook} textButton="Login with Facebook" />
+              {FACEBOOK_KEY ? (
+                <FacebookButton 
+                  handleCallback={handleCallbackFacebook} 
+                  textButton="Login with Facebook" 
+                />
+              ) : null}
+              {GOOGLE_KEY ? (
+                <GoogleButton 
+                  buttonText="Login with Google" 
+                />
+              ) : null}
             </div>
           </form>
         </div>

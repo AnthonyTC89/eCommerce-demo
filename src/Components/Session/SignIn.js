@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import updateSession from '../../redux/actions/updateSession';
 import { SignInInfo, buttons } from '../../Info.json';
+import FacebookButton from './FacebookButton';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +30,13 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  btnLink: {
+    textTransform: 'none',
+  },
+  oAuthGroup: {
+    textAlign: 'center',
+    marginTop: '1rem',
+  },
 }));
 
 const defaultInputForm = {
@@ -36,12 +45,15 @@ const defaultInputForm = {
 };
 
 const SignIn = ({ history, changeSession, handleComponent }) => {
+  const classes = useStyles();
   const [inputForm, setInputForm] = useState(defaultInputForm);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
-
-  const classes = useStyles();
   const { signin, wait } = buttons;
+
+  const handleCallbackFacebook = (response) => {
+    console.log(response);
+  };
 
   const handleChange = (e) => {
     e.persist();
@@ -88,7 +100,7 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
           <form className={classes.form} onSubmit={handleSubmit}>
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               type="email"
@@ -100,7 +112,7 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
             />
             <TextField
               variant="outlined"
-              margin="normal"
+              margin="dense"
               required
               fullWidth
               name="password"
@@ -122,12 +134,16 @@ const SignIn = ({ history, changeSession, handleComponent }) => {
               {loading ? wait : signin}
             </Button>
             <Button
-              className={classes.link}
+              className={classes.btnLink}
               type="button"
               onClick={handleComponent}
             >
               {SignInInfo.signup}
             </Button>
+            <Divider />
+            <div className={classes.oAuthGroup}>
+              <FacebookButton handleCallback={handleCallbackFacebook} textButton="Login with Facebook" />
+            </div>
           </form>
         </div>
       </Container>

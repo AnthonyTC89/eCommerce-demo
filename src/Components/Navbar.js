@@ -66,6 +66,7 @@ const Navbar = ({ session, history, changeSession, logo }) => {
   const { navItems } = NavbarInfo;
 
   const handleLogout = () => {
+    localStorage.removeItem('customer_token');
     changeSession(null);
     history.push('/');
   };
